@@ -1,6 +1,9 @@
 doctype html
 html(lang="en")
     head
+        if BASE_URL
+            base(href=BASE_URL)
+            link(rel="canonical" href=BASE_URL)
         link(rel="stylesheet" type="text/css" href="style.css")
         meta(charset="UTF-8")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
