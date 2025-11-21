@@ -1,6 +1,38 @@
+async function requestWakeLock() {
+    navigator.permissions.query({ name: "screen-wake-lock" }).then(async success => {
+        if ("wakeLock" in navigator) {
 
-window.onload = () =>
-{
+            navigator.wakeLock.request("screen").then(
+                lockSuccess => {
+                    document.querySelector<HTMLButtonElement>('#wake-lock').style.display = "none";
+                },
+                lockError => {
+                    if (confirm("Want to hide the button?")) {
+                        document.querySelector<HTMLButtonElement>('#wake-lock').style.display = "none";
+                    }
+                    alert("lock error " + lockError)
+                }
+            );
+        }
+        else {
+            alert("wakeLock not available");
+            if (confirm("Want to hide the button?")) {
+                document.querySelector<HTMLButtonElement>('#wake-lock').style.display = "none";
+            }
+        }
+    },
+        error => {
+            alert("error " + JSON.stringify(error))
+            if (confirm("Want to hide the button?")) {
+                document.querySelector<HTMLButtonElement>('#wake-lock').style.display = "none";
+            }
+        }
+    );
+}
+
+window.onload = async () => {
+    document.querySelector('#wake-lock').addEventListener('click', requestWakeLock);
+
     let buttons = document.querySelectorAll('.digit');
     let skipButton = document.querySelector('.skip');
     let summonButton = document.querySelector('.summon');
